@@ -22,6 +22,7 @@ After installing all we need to download and setup our application:
 
 Now, to run this application:
     - It's better to open to terminals (we recommend to open it in visual studio code)
+    - Iniciate your database server
     - Run 'npm run dev' in one terminal
     - Run 'php artisan serve' in the other one
-    - Open the url gives when after running php command
+    - Open the url gave after running php command
