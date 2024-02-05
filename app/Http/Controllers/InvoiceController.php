@@ -9,7 +9,7 @@ use App\Models\InvoiceItem;
 
 class InvoiceController extends Controller
 {
-    public function get_all_invoice() {
+    public function get_all_invoices() {
         $invoices = Invoice::with('customer')->orderBy('id', 'DESC')->get();
         return response()->json([
             'invoices' => $invoices
@@ -64,27 +64,27 @@ class InvoiceController extends Controller
     }
 
     public function add_invoice(Request $request) {
-        $invoiceitem = $request->input("invoice_item");
+        $invoiceItem = $request->input("invoice_item");
 
-        $invoicedata['sub_total'] = $request->input("subtotal");
-        $invoicedata['total'] = $request->input("total");
-        $invoicedata['customer_id'] = $request->input("customer_id");
-        $invoicedata['number'] = $request->input("number");
-        $invoicedata['date'] = $request->input("date");
-        $invoicedata['due_date'] = $request->input("due_date");
-        $invoicedata['discount'] = $request->input("discount");
-        $invoicedata['reference'] = $request->input("reference");
-        $invoicedata['terms_and_conditions'] = $request->input("terms_and_conditions");
+        $invoiceData['sub_total'] = $request->input("subtotal");
+        $invoiceData['total'] = $request->input("total");
+        $invoiceData['customer_id'] = $request->input("customer_id");
+        $invoiceData['number'] = $request->input("number");
+        $invoiceData['date'] = $request->input("date");
+        $invoiceData['due_date'] = $request->input("due_date");
+        $invoiceData['discount'] = $request->input("discount");
+        $invoiceData['reference'] = $request->input("reference");
+        $invoiceData['terms_and_conditions'] = $request->input("terms_and_conditions");
 
-        $invoice = Invoice::create($invoicedata);
+        $invoice = Invoice::create($invoiceData);
 
-        foreach(json_decode($invoiceitem) as $item) {
-            $itemdata['product_id'] = $item->id;
-            $itemdata['invoice_id'] = $invoice->id;
-            $itemdata['quantity'] = $item->quantity;
-            $itemdata['unit_price'] = $item->unit_price;
+        foreach(json_decode($invoiceItem) as $item) {
+            $itemData['product_id'] = $item->id;
+            $itemData['invoice_id'] = $invoice->id;
+            $itemData['quantity'] = $item->quantity;
+            $itemData['unit_price'] = $item->unit_price;
 
-            InvoiceItem::create($itemdata);
+            InvoiceItem::create($itemData);
         }
     }
 
@@ -122,17 +122,17 @@ class InvoiceController extends Controller
 
         $invoice->update($request->all());
 
-        $invoiceitem = $request->input("invoice_item");
+        $invoiceItem = $request->input("invoice_item");
 
         $invoice->invoice_items()->delete();
 
-        foreach(json_decode($invoiceitem) as $item) {
-            $itemdata['product_id'] = $item->product_id;
-            $itemdata['invoice_id'] = $invoice->id;
-            $itemdata['quantity'] = $item->quantity;
-            $itemdata['unit_price'] = $item->unit_price;
+        foreach(json_decode($invoiceItem) as $item) {
+            $itemData['product_id'] = $item->product_id;
+            $itemData['invoice_id'] = $invoice->id;
+            $itemData['quantity'] = $item->quantity;
+            $itemData['unit_price'] = $item->unit_price;
 
-            InvoiceItem::create($itemdata);
+            InvoiceItem::create($itemData);
         }
     }
 
